@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Yamblz</string>
     <string name="content">Hello</string>
+    <string name="title_first_section">Settings</string>
+    <string name="title_columns_count_preference">Number of columns</string>
+    <string name="summary_columns_count_preference">2</string>
+    <string name="dialog_columns_count_preference">Columns</string>
+    <string name="settings">Settings</string>
+    <string name="columns_count_pref">columns_count_pref</string>
 </resources>

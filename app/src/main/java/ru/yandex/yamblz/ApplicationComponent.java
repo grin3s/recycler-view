@@ -1,5 +1,6 @@
 package ru.yandex.yamblz;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 

@@ -105,6 +105,8 @@ dependencies {
     compile libraries.lynx
     compile libraries.processPhoenix
 
+    compile libraries.preferenceFragment
+
     testCompile libraries.junit
     testCompile libraries.robolectric
     testCompile libraries.assertJ

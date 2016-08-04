@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/title_first_section">
+
+        <EditTextPreference
+            android:key="@string/columns_count_pref"
+            android:title="@string/title_columns_count_preference"
+            android:dialogTitle="@string/dialog_columns_count_preference" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

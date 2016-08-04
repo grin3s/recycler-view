@@ -1,6 +1,7 @@
 package ru.yandex.yamblz;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
