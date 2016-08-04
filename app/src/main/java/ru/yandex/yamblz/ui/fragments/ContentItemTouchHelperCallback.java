@@ -1,7 +1,12 @@
 package ru.yandex.yamblz.ui.fragments;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
+import android.view.View;
 
 /**
  * Created by grin3s on 02.08.16.
@@ -10,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 public class ContentItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter mAdapter;
+    private Paint mPaint = new Paint();
 
     public interface ItemTouchHelperAdapter {
 
@@ -19,6 +25,7 @@ public class ContentItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     public ContentItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
+        mPaint.setColor(Color.RED);
         mAdapter = adapter;
     }
 
@@ -36,7 +43,7 @@ public class ContentItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT;
-        int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+        int swipeFlags = ItemTouchHelper.END;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -50,6 +57,16 @@ public class ContentItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+    }
+
+    @Override
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            View itemView = viewHolder.itemView;
+            mPaint.setAlpha((int) (dX / itemView.getWidth() * 255f));
+            c.drawRect(itemView.getLeft(), itemView.getTop(), itemView.getRight() + dX, itemView.getBottom(), mPaint);
+        }
     }
 
 }

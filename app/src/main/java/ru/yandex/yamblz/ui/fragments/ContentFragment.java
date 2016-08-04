@@ -91,10 +91,7 @@ public class ContentFragment extends BaseFragment {
             super.onScrolled(recyclerView, dx, dy);
             int curPosition = rv.getChildAdapterPosition(rv.getChildAt(0));
             int curAlpha = curPosition;
-//            Log.d(DEBUG_TAG, Integer.toString(curAlpha));
-//            mDrawable.setAlpha(curAlpha);
-            mDrawable.setAlpha(curPosition);
-            //mView.setBackground(newDrawable);
+            mDrawable.setAlpha(Math.min(curPosition, 255));
         }
 
     }

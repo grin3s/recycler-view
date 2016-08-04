@@ -1,6 +1,7 @@
 package ru.yandex.yamblz.ui.fragments;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,7 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
     static class ContentHolder extends RecyclerView.ViewHolder {
         ContentHolder(View itemView) {
             super(itemView);
+            itemView.setBackground(new ColorDrawable(Color.parseColor("#00FF0000")));
         }
 
         void bind(Integer color) {
