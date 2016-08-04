@@ -35,8 +35,12 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
     }
 
     private Integer createColorForPosition(int position) {
-        if (position >= colors.size()) {
-            colors.add(Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255)));
+        int prevSize = colors.size();
+        if (position >= prevSize) {
+            //when we rotate the screen the state is restored and we may need to recreate more than one element
+            for (int i = prevSize; i <= position; i++) {
+                colors.add(Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255)));
+            }
         }
         return colors.get(position);
     }

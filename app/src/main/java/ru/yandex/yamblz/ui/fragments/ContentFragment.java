@@ -1,6 +1,8 @@
 package ru.yandex.yamblz.ui.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -60,11 +62,41 @@ public class ContentFragment extends BaseFragment {
             rv.addItemDecoration(new SwitchItemDecorator());
         }
 
+        rv.addOnScrollListener(new ColorChangeScrollListener(view));
+
 
         ItemTouchHelper.Callback callback =
                 new ContentItemTouchHelperCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rv);
+    }
+
+
+    private class ColorChangeScrollListener extends RecyclerView.OnScrollListener {
+        private ColorDrawable mDrawable = new ColorDrawable(Color.RED);
+        private View mView;
+
+        ColorChangeScrollListener(View view) {
+            mView = view;
+            mView.setBackground(mDrawable);
+        }
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            int curPosition = rv.getChildAdapterPosition(rv.getChildAt(0));
+            int curAlpha = curPosition;
+//            Log.d(DEBUG_TAG, Integer.toString(curAlpha));
+//            mDrawable.setAlpha(curAlpha);
+            mDrawable.setAlpha(curPosition);
+            //mView.setBackground(newDrawable);
+        }
+
     }
 
 }

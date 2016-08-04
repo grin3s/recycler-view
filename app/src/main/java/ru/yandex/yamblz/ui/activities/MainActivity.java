@@ -57,6 +57,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the main_menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
