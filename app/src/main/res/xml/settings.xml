@@ -9,6 +9,11 @@
             android:title="@string/title_columns_count_preference"
             android:dialogTitle="@string/dialog_columns_count_preference" />
 
+        <CheckBoxPreference
+            android:key="@string/decorate_pref"
+            android:title="@string/decorate_pref_title">
+        </CheckBoxPreference>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -1,24 +1,23 @@
 package ru.yandex.yamblz.ui.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.ui.adapters.ContentItemTouchHelperCallback;
 
 public class ContentFragment extends BaseFragment {
 
@@ -27,7 +26,10 @@ public class ContentFragment extends BaseFragment {
     RecyclerView rv;
 
     @BindString(R.string.columns_count_pref)
-    String str;
+    String columnsCountPrefStr;
+
+    @BindString(R.string.decorate_pref)
+    String decoratePrefStr;
 
     GridLayoutManager mLayoutManager;
     ContentAdapter mAdapter;
@@ -54,9 +56,15 @@ public class ContentFragment extends BaseFragment {
         mAdapter = new ContentAdapter();
         rv.setAdapter(mAdapter);
 
+        if (prefs.getBoolean(decoratePrefStr, false)) {
+            rv.addItemDecoration(new SwitchItemDecorator());
+        }
+
+
         ItemTouchHelper.Callback callback =
                 new ContentItemTouchHelperCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rv);
     }
+
 }

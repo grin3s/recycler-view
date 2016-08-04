@@ -1,4 +1,4 @@
-package ru.yandex.yamblz.ui.adapters;
+package ru.yandex.yamblz.ui.fragments;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;

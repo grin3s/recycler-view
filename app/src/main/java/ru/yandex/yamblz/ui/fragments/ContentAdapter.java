@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Random;
 
 import ru.yandex.yamblz.R;
-import ru.yandex.yamblz.ui.adapters.ContentItemTouchHelperCallback;
 
 class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> implements ContentItemTouchHelperCallback.ItemTouchHelperAdapter {
 
