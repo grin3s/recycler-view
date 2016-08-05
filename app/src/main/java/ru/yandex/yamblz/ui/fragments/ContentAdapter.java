@@ -1,5 +1,8 @@
 package ru.yandex.yamblz.ui.fragments;
 
+import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +21,7 @@ import ru.yandex.yamblz.R;
 
 class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> implements ContentItemTouchHelperCallback.ItemTouchHelperAdapter {
 
-    private final Random rnd = new Random();
+    private static final Random rnd = new Random();
     private final List<Integer> colors = new ArrayList<>();
 
     private int longClicked1 = -1, longClicked2 = -1;
@@ -32,19 +36,36 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
     public ContentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_item, parent, false);
         ContentHolder holder = new ContentHolder(view);
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (longClicked1 == -1) {
-                    longClicked1 = holder.getAdapterPosition();
-                }
-                else {
+        view.setOnLongClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            if (longClicked1 == -1) {
+                longClicked1 = pos;
+            }
+            else {
+                if (pos != longClicked1) {
                     longClicked2 = holder.getAdapterPosition();
                     onSwap(longClicked1, longClicked2);
                 }
-                return false;
             }
+            return false;
         });
+
+        view.setOnClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            int newColor = getRandomColor();
+            int oldColor = colors.get(pos);
+            ValueAnimator colorAnimation = new ValueAnimator();
+            colorAnimation.setIntValues(oldColor, newColor);
+            colorAnimation.setDuration(3000);
+            colorAnimation.setEvaluator(new ArgbEvaluator());
+            colorAnimation.addUpdateListener(animation -> {
+                Integer curColor = (Integer) animation.getAnimatedValue();
+                colors.set(pos, curColor);
+                notifyItemChanged(pos);
+            });
+            colorAnimation.start();
+        });
+
         return holder;
     }
 
@@ -70,12 +91,16 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
         return Integer.MAX_VALUE;
     }
 
+    private static int getRandomColor() {
+        return Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255));
+    }
+
     private Integer createColorForPosition(int position) {
         int prevSize = colors.size();
         if (position >= prevSize) {
             //when we rotate the screen the state is restored and we may need to recreate more than one element
             for (int i = prevSize; i <= position; i++) {
-                colors.add(Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255)));
+                colors.add(getRandomColor());
             }
         }
         return colors.get(position);
@@ -105,6 +130,7 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
     }
 
     static class ContentHolder extends RecyclerView.ViewHolder {
+        WeakReference<ContentAdapter> mAdapter;
         ContentHolder(View itemView) {
             super(itemView);
         }
