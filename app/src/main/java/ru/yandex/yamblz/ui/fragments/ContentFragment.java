@@ -95,7 +95,7 @@ public class ContentFragment extends BaseFragment {
         buttonColumnsMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLayoutManager.setSpanCount(mLayoutManager.getSpanCount() - 1);
+                mLayoutManager.setSpanCount(Math.max(mLayoutManager.getSpanCount() - 1, 1));
                 mAdapter.notifyItemChanged(0);
             }
         });
