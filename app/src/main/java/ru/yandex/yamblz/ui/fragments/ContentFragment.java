@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import butterknife.BindString;
@@ -33,8 +34,18 @@ public class ContentFragment extends BaseFragment {
     @BindString(R.string.decorate_pref)
     String decoratePrefStr;
 
+    @BindView(R.id.button_columns_plus)
+    Button buttonColumnsPlus;
+
+    @BindView(R.id.button_columns_minus)
+    Button buttonColumnsMinus;
+
+    @BindView(R.id.checkBox_decorator)
+    CheckBox checkBoxDecorator;
+
     GridLayoutManager mLayoutManager;
     ContentAdapter mAdapter;
+    SwitchItemDecorator mDecorator = new SwitchItemDecorator();
 
     @NonNull
     @Override
@@ -64,6 +75,31 @@ public class ContentFragment extends BaseFragment {
 
         rv.addOnScrollListener(new ColorChangeScrollListener(view));
 
+        checkBoxDecorator.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
+                rv.addItemDecoration(mDecorator);
+            }
+            else {
+                rv.removeItemDecoration(mDecorator);
+            }
+        });
+
+        buttonColumnsPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLayoutManager.setSpanCount(mLayoutManager.getSpanCount() + 1);
+                mAdapter.notifyItemChanged(0);
+            }
+        });
+
+        buttonColumnsMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLayoutManager.setSpanCount(mLayoutManager.getSpanCount() - 1);
+                mAdapter.notifyItemChanged(0);
+            }
+        });
+
 
         ItemTouchHelper.Callback callback =
                 new ContentItemTouchHelperCallback(mAdapter);
@@ -72,6 +108,7 @@ public class ContentFragment extends BaseFragment {
     }
 
 
+    //didn't understand the task correctly at first, but whatever...
     private class ColorChangeScrollListener extends RecyclerView.OnScrollListener {
         private ColorDrawable mDrawable = new ColorDrawable(Color.RED);
         private View mView;

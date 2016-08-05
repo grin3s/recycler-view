@@ -10,4 +10,6 @@
     <string name="set_columns">SET COLUMNS</string>
     <string name="decorate_pref">decorate_pref</string>
     <string name="decorate_pref_title">Decorate</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
 </resources>

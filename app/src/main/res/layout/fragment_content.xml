@@ -7,9 +7,36 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:id="@+id/rv">
 
     </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:text="@string/plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rv"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/button_columns_plus" />
+
+    <Button
+        android:text="@string/minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rv"
+        android:layout_toRightOf="@+id/button_columns_plus"
+        android:layout_toEndOf="@+id/button_columns_plus"
+        android:id="@+id/button_columns_minus" />
+
+    <CheckBox
+        android:text="Decorator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_columns_plus"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/checkBox_decorator" />
 
 </RelativeLayout>

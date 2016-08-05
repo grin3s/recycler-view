@@ -20,14 +20,49 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
     private final Random rnd = new Random();
     private final List<Integer> colors = new ArrayList<>();
 
+    private int longClicked1 = -1, longClicked2 = -1;
+    private int lastSwapped1 = -1, lastSwapped2 = -1;
+
+    private void clearLongClicked() {
+        longClicked1 = -1;
+        longClicked2 = -1;
+    }
+
     @Override
     public ContentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ContentHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.content_item, parent, false));
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_item, parent, false);
+        ContentHolder holder = new ContentHolder(view);
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (longClicked1 == -1) {
+                    longClicked1 = holder.getAdapterPosition();
+                }
+                else {
+                    longClicked2 = holder.getAdapterPosition();
+                    onSwap(longClicked1, longClicked2);
+                }
+                return false;
+            }
+        });
+        return holder;
+    }
+
+    private void onSwap(int pos1, int pos2) {
+        Collections.swap(colors, pos1, pos2);
+        lastSwapped1 = pos1;
+        lastSwapped2 = pos2;
+        clearLongClicked();
+        notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(ContentHolder holder, int position) {
-        holder.bind(createColorForPosition(position));
+        boolean swapped = false;
+        if ((position == lastSwapped1) || (position == lastSwapped2)) {
+            swapped = true;
+        }
+        holder.bind(createColorForPosition(position), swapped);
     }
 
     @Override
@@ -49,6 +84,7 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
     @Override
     public void onItemDismiss(int position) {
         colors.remove(position);
+        clearLongClicked();
         notifyItemRemoved(position);
     }
 
@@ -63,6 +99,7 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
                 Collections.swap(colors, i, i - 1);
             }
         }
+        clearLongClicked();
 
         notifyItemMoved(fromPosition, toPosition);
     }
@@ -70,12 +107,16 @@ class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentHolder> 
     static class ContentHolder extends RecyclerView.ViewHolder {
         ContentHolder(View itemView) {
             super(itemView);
-            itemView.setBackground(new ColorDrawable(Color.parseColor("#00FF0000")));
         }
 
-        void bind(Integer color) {
+        void bind(Integer color, boolean swapped) {
             itemView.setBackgroundColor(color);
-            ((TextView) itemView).setText("#".concat(Integer.toHexString(color).substring(2)));
+            if (swapped) {
+                ((TextView) itemView).setText("WAS SWAPPED");
+            }
+            else {
+                ((TextView) itemView).setText("#".concat(Integer.toHexString(color).substring(2)));
+            }
         }
     }
 }
